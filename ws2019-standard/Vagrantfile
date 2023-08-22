@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure("2") do |config|
+  # These classes are used to get user input during the provisioning phase.  Other ways didn't work as well.
+  class Username
+        def to_s
+            print "Enter a user name (this will be created as an admin with logon-as-service rights):"
+            STDIN.gets.chomp
+        end
+    end
+
+  class Password
+        def to_s
+            print "Enter a password for the admin user:"
+            STDIN.noecho(&:gets).chomp 
+        end
+    end
+
+  # Generic configuration
+  config.vm.box = "gusztavvargadr/windows-server-2019-standard"
+  config.vm.provider "hyperv"
+  config.vm.synced_folder '.', '/vagrant', disabled: true 
+
+  # HyperV configuration
+  config.vm.provider "hyperv" do |h|
+    h.linked_clone = true
+    h.memory = 2048
+    h.vmname = "WS2019 Box 1"
+  end
+
+  # Provisioning
+  config.vm.provision "shell" do |s|
+    s.path = "./provision.ps1"
+    s.env = {"ADMIN_USER" => Username.new, "ADMIN_PASSWORD" => Password.new}
+  end
+end

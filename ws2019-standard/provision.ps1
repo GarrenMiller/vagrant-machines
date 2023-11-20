@@ -2,6 +2,7 @@ function ProvisionVagrantMachine {
     New-LocalAdmin 
     Grant-LogonAsService
     Install-IIS
+    Set-FirewallRules
     Rename-Computer "ws19dev01" -Restart
 }
 function New-LocalAdmin {
@@ -43,5 +44,8 @@ function Grant-LogonAsService {
         $error[0]
     }
     } -ArgumentList $username
+}
+function Set-FirewallRules {
+    Set-NetFirewallRule -DisplayGroup "File And Printer Sharing" -Enabled True -Profile Private
 }
 ProvisionVagrantMachine

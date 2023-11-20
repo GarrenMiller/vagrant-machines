@@ -2,6 +2,7 @@ function ProvisionVagrantMachine {
     New-LocalAdmin 
     Grant-LogonAsService
     Install-IIS
+    Rename-Computer "ws19dev01" -Restart
 }
 function New-LocalAdmin {
     $password = ConvertTo-SecureString -AsPlainText -Force $env:ADMIN_PASSWORD

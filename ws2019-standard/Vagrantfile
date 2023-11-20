@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "hyperv" do |h|
     h.linked_clone = true
     h.memory = 2048
-    h.vmname = "WS2019 Box 1"
+    h.vmname = "ws19dev01"
   end
 
   # Provisioning
